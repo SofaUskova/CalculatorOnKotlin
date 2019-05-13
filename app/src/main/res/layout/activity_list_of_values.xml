@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+    <TextView
+            android:id="@+id/textSaveValues"
+            android:text="Сохраненные значения"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:textSize="30sp"/>
+
+    <TextView
+            android:id="@+id/listOfValues"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textSaveValues"
+            android:gravity="center"
+            android:textSize="30sp"/>
+
+    <TextView
+            android:id="@+id/textCurrentValue"
+            android:text="Текущее значение"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listOfValues"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textSize="30sp"/>
+
+    <TextView
+            android:id="@+id/currentValue"
+            android:layout_marginTop="20dp"
+            android:text="value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textCurrentValue"
+            android:layout_alignStart="@+id/textCurrentValue"
+            android:textSize="30sp"/>
+
+    <Button
+            android:id="@+id/save"
+            android:text="Сохранить"
+            android:layout_marginTop="20dp"
+            android:padding="17dp"
+            android:layout_below="@+id/textCurrentValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/calculator"
+            android:textSize="20sp"/>
+
+    <Button
+            android:id="@+id/calculator"
+            android:text="калькулятор"
+            android:layout_marginTop="20dp"
+            android:padding="17dp"
+            android:layout_below="@+id/save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
+
+</RelativeLayout>

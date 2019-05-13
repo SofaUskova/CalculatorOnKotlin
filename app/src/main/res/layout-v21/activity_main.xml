@@ -26,14 +26,22 @@
             grid:layout_rowWeight="1"/>
 
     <Button
-            android:id="@+id/cancel"
-            android:text="C"
-            grid:layout_rowSpan="2"
-            android:minHeight="50dp"
+            android:id="@+id/ok"
+            android:text="ok"
+            android:textSize="15sp"
             grid:layout_row="0"
             grid:layout_column="3"
             grid:layout_columnWeight="1"
-            grid:layout_rowWeight="2"/>
+            grid:layout_rowWeight="1"/>
+
+    <Button
+            android:id="@+id/cancel"
+            android:text="C"
+            android:textSize="15sp"
+            grid:layout_row="1"
+            grid:layout_column="3"
+            grid:layout_columnWeight="1"
+            grid:layout_rowWeight="1"/>
 
     <TextView
             android:id="@+id/expression"
@@ -47,7 +55,7 @@
             grid:layout_column="0"
             grid:layout_columnSpan="3"
             grid:layout_columnWeight="1"
-            grid:layout_rowWeight="2"/>
+            grid:layout_rowWeight="1"/>
 
     <!-- Row 2 -->
     <Button

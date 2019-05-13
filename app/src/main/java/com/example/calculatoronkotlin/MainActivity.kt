@@ -2,12 +2,13 @@ package com.example.calculatoronkotlin
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.databinding.DataBindingUtil
 import android.view.View
-import com.example.calculatoronkotlin.databinding.MainActivityBinding
-import kotlinx.android.synthetic.main.main_activity.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 import java.util.*
+import android.content.Intent
+import android.content.Intent.*
+
 
 class MainActivity : AppCompatActivity() {
     private val stackNumber = Stack<Int>()
@@ -16,10 +17,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.activity_main)
 
-        //DataBindingUtil.setContentView<MainActivityBinding>(this, R.layout.main_activity)
+        //DataBindingUtil.setContentView<MainActivityBinding>(this, R.layout.activity_main)
 
+        ok.setOnClickListener(this::onClickOk)
         cancel.setOnClickListener(this::onClickOperand)
         divide.setOnClickListener(this::onClickOperand)
         multiply.setOnClickListener(this::onClickOperand)
@@ -37,6 +39,14 @@ class MainActivity : AppCompatActivity() {
         seven.setOnClickListener(this::onClickNumber)
         eight.setOnClickListener(this::onClickNumber)
         nine.setOnClickListener(this::onClickNumber)
+    }
+
+    private fun onClickOk(v: View) {
+        val intent = Intent(this, BaseActivity::class.java)
+            .addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+
+        intent.putExtra("result", result.text.toString())
+        startActivity(intent)
     }
 
     private fun onClickNumber(v: View) {
