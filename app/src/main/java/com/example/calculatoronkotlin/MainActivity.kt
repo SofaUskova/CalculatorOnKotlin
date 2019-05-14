@@ -11,15 +11,16 @@ import android.content.Intent.*
 import kotlin.collections.ArrayList
 import android.content.SharedPreferences
 import android.R.id.edit
+import android.widget.Toast
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private val stackNumber = Stack<Int>()
     private val stackOperand = Stack<Char>()
-    var number: String = ""
+    private var number: String = ""
     private lateinit var mSettings: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
-
     private val list: MutableList<Int> = mutableListOf()
+    private lateinit var editor: SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         mSettings = getSharedPreferences("settings", MODE_PRIVATE)
         editor = mSettings.edit()
-        //DataBindingUtil.setContentView<MainActivityBinding>(this, R.layout.activity_main)
 
         ok.setOnClickListener(this::onClickOk)
         cancel.setOnClickListener(this::onClickOperand)
@@ -54,14 +54,14 @@ class MainActivity : AppCompatActivity() {
             .addFlags(FLAG_ACTIVITY_CLEAR_TOP)
 
         intent.putExtra("result", result.text.toString())
-        intent.putExtra("results", list.toString())
         startActivity(intent)
     }
 
     private fun onClickNumber(v: View) {
-        result.text = ""
-        if (expression.text.toString() == "0")
+        if (expression.text.toString() == "0") {
             expression.text = ""
+            result.text = ""
+        }
 
         when (v.id) {
             R.id.zero -> {
@@ -137,48 +137,61 @@ class MainActivity : AppCompatActivity() {
 
             R.id.equally -> {
                 if (stackNumber.size == 1) {
+                    if (list.size < 5) {
+                        list.add(stackNumber.peek())
+                        editor.putInt("RESULT${list.size}", stackNumber.peek())
+                        editor.apply()
+                    }
                     result.text = stackNumber.peek().toString()
                     stackNumber.pop()
-                } else
+                } else {
                     solution()
+                }
             }
         }
     }
 
     private fun solution() {
-        var rezult = ""
-        while (!stackNumber.isEmpty()) {
-            val second = stackNumber.peek()
-            stackNumber.pop()
-            val first = stackNumber.peek()
-            stackNumber.pop()
+        try {
+            var rezult = ""
+            while (!stackNumber.isEmpty()) {
+                val second = stackNumber.peek()
+                stackNumber.pop()
+                val first = stackNumber.peek()
+                stackNumber.pop()
 
-            rezult = when (stackOperand.peek()) {
-                '/' -> {
-                    if (second == 0) {
-                        "Error"
-                    } else
-                        (first / second).toString()
+                rezult = when (stackOperand.peek()) {
+                    '/' -> {
+                        if (second == 0) {
+                            "Error"
+                        } else
+                            (first / second).toString()
+                    }
+                    '*' ->
+                        (first * second).toString()
+                    '-' ->
+                        (first - second).toString()
+                    '+' ->
+                        (first + second).toString()
+                    else ->
+                        "0"
                 }
-                '*' ->
-                    (first * second).toString()
-                '-' ->
-                    (first - second).toString()
-                '+' ->
-                    (first + second).toString()
-                else ->
-                    "0"
+                stackOperand.pop()
+                if (!stackNumber.isEmpty())
+                    stackNumber.push(rezult.toInt())
             }
-            stackOperand.pop()
-            if (!stackNumber.isEmpty())
-                stackNumber.push(rezult.toInt())
-        }
-
-        result.text = rezult
-        if (list.size < 6) {
-            list.add(rezult.toInt())
-            editor.putInt("RESULT${list.size}", rezult.toInt())
-            editor.apply()
+            result.text = rezult
+            if (list.size < 5) {
+                list.add(rezult.toInt())
+                editor.putInt("RESULT${list.size}", rezult.toInt())
+                editor.apply()
+            }
+        } catch (e: Exception) {
+            val toast = Toast.makeText(
+                applicationContext,
+                e.message, Toast.LENGTH_SHORT
+            )
+            toast.show()
         }
     }
 }

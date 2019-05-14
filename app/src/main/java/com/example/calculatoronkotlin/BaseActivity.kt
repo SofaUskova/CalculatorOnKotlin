@@ -19,26 +19,28 @@ class BaseActivity : AppCompatActivity() {
         save.setOnClickListener(this::onClickSave)
         calculator.setOnClickListener(this::onClickCalculator)
 
-        val arguments = intent.extras
+        if (intent.extras != null)
+            currentValue.text = intent.extras.getString("result")
 
-        if (arguments != null)
-            currentValue.text = arguments.getString("result")
-
-        if(mSettings.contains("RESULT")) {
-            for(int in 5 downTo 1) {
-                listOfValues.append(mSettings.getInt("RESULT$int", 0).toString())
-                listOfValues.append("\n")
-            }
+        for (int in 5 downTo 1) {
+            listOfValues.append(mSettings.getInt("RESULT$int", 0).toString())
+            listOfValues.append("\n")
         }
     }
 
     private fun onClickSave(v: View) {
+        listOfValues.text = ""
+        for (int in 5 downTo 2) {
+            listOfValues.append(mSettings.getInt("RESULT$int", 0).toString())
+            listOfValues.append("\n")
+        }
         listOfValues.append(currentValue.text)
     }
 
     private fun onClickCalculator(v: View) {
-        startActivity(Intent(this, MainActivity::class.java)
-            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
-
+        startActivity(
+            Intent(this, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        )
     }
 }
