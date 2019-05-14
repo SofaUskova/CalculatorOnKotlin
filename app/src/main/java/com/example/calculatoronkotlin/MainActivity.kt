@@ -8,17 +8,25 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import android.content.Intent
 import android.content.Intent.*
-
+import kotlin.collections.ArrayList
+import android.content.SharedPreferences
+import android.R.id.edit
 
 class MainActivity : AppCompatActivity() {
     private val stackNumber = Stack<Int>()
     private val stackOperand = Stack<Char>()
     var number: String = ""
+    private lateinit var mSettings: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+
+    private val list: MutableList<Int> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mSettings = getSharedPreferences("settings", MODE_PRIVATE)
+        editor = mSettings.edit()
         //DataBindingUtil.setContentView<MainActivityBinding>(this, R.layout.activity_main)
 
         ok.setOnClickListener(this::onClickOk)
@@ -46,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             .addFlags(FLAG_ACTIVITY_CLEAR_TOP)
 
         intent.putExtra("result", result.text.toString())
+        intent.putExtra("results", list.toString())
         startActivity(intent)
     }
 
@@ -164,6 +173,12 @@ class MainActivity : AppCompatActivity() {
             if (!stackNumber.isEmpty())
                 stackNumber.push(rezult.toInt())
         }
+
         result.text = rezult
+        if (list.size < 6) {
+            list.add(rezult.toInt())
+            editor.putInt("RESULT${list.size}", rezult.toInt())
+            editor.apply()
+        }
     }
 }
